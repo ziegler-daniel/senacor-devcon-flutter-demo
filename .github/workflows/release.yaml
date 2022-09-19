@@ -2,7 +2,7 @@ name: 'Build and deploy snapshot release'
 on:
   push:
     branches:
-      - 'main'
+      - 'master'
 jobs:
   release-app:
     runs-on: macos-latest
