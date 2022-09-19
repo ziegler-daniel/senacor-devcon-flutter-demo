@@ -1,4 +1,4 @@
-package de.zieglr.mysafe.senacor_devcon_mysafe
+package de.zieglr.mysafe
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,57 @@
+name: 'Build and deploy snapshot release'
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  release-app:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Set up Java environment'
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 'Set up flutter'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.0.5'
+
+      - name: 'Install dependencies'
+        run: flutter pub get
+
+      - name: 'Run code analysis'
+        run: flutter analyze
+
+      - name: 'Run tests'
+        run: flutter test
+
+      - name: 'Set build name & number'
+        run: |
+          echo "APP_BUILD_NAME=$(yq .version pubspec.yaml)-dev" >> $GITHUB_ENV
+          echo "APP_BUILD_NUMBER=$(git rev-list HEAD --count)" >> $GITHUB_ENV
+          echo "Build version $APP_BUILD_NAME ($APP_BUILD_NUMBER)"
+
+      - name: 'Setup Android keystore & secrets'
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/upload-keystore.jks
+
+          echo "keyAlias=upload" > android/key.properties
+          echo "storeFile=upload-keystore.jks" >> android/key.properties
+          echo "storePassword=$ANDROID_KEYSTORE_PASSWORD" >> android/key.properties
+          echo "keyPassword=$ANDROID_KEY_PASSWORD" >> android/key.properties
+
+          shasum android/app/upload-keystore.jks
+          shasum android/key.properties
+
+      - name: 'Build Android app'
+        run: flutter build appbundle --build-name=$APP_BUILD_NAME --build-number=$APP_BUILD_NUMBER
+

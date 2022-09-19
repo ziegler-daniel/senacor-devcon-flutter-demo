@@ -1,7 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.zieglr.mysafe.senacor_devcon_mysafe">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="de.zieglr.mysafe">
    <application
-        android:label="senacor_devcon_mysafe"
+        android:label="My Safe"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
