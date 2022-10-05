@@ -8,6 +8,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: 'Set up Java environment'
         uses: actions/setup-java@v3
@@ -34,7 +36,6 @@ jobs:
         run: |
           echo "APP_BUILD_NAME=$(yq .version pubspec.yaml)-dev" >> $GITHUB_ENV
           echo "APP_BUILD_NUMBER=$(git rev-list HEAD --count)" >> $GITHUB_ENV
-          echo "Build version $APP_BUILD_NAME ($APP_BUILD_NUMBER)"
 
       - name: 'Setup Android keystore & secrets'
         env:
@@ -52,7 +53,9 @@ jobs:
           echo "$GOOGLE_PLAY_API_KEY_BASE64" | base64 --decode > android/google-api-key.json
 
       - name: 'Build Android app'
-        run: flutter build appbundle --build-name=$APP_BUILD_NAME --build-number=$APP_BUILD_NUMBER
+        run: |
+          echo "Build version $APP_BUILD_NAME ($APP_BUILD_NUMBER)"
+          flutter build appbundle --build-name=$APP_BUILD_NAME --build-number=$APP_BUILD_NUMBER
 
       - name: 'Deploy Android app'
         run: |
