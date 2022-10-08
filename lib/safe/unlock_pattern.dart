@@ -26,10 +26,7 @@ class UnlockPattern extends StatelessWidget {
             Flexible(
               child: PatternLock(
                 fillPoints: true,
-                onInputComplete: (List<int> input) =>
-                    listEquals(input, [0, 3, 7, 5, 2])
-                        ? _showSuccess(context)
-                        : _showError(context),
+                onInputComplete: (List<int> input) => listEquals(input, [0, 3, 7, 5, 2]) ? _showSuccess(context) : _showError(context),
               ),
             ),
           ],
@@ -48,7 +45,7 @@ class UnlockPattern extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const UnlockBiometric()),
+              MaterialPageRoute(builder: (_) => UnlockBiometric()),
             );
           },
         ),
