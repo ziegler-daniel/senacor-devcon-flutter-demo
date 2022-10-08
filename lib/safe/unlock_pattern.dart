@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pattern_lock/pattern_lock.dart';
+import 'package:provider/provider.dart';
 import 'package:senacor_devcon_mysafe/safe/unlock_biometric.dart';
+
+import '../log/log.dart';
 
 class UnlockPattern extends StatelessWidget {
   const UnlockPattern({Key? key}) : super(key: key);
@@ -26,7 +29,8 @@ class UnlockPattern extends StatelessWidget {
             Flexible(
               child: PatternLock(
                 fillPoints: true,
-                onInputComplete: (List<int> input) => listEquals(input, [0, 3, 7, 5, 2]) ? _showSuccess(context) : _showError(context),
+                onInputComplete: (List<int> input) =>
+                    listEquals(input, [0, 3, 7, 5, 2]) ? _showSuccess(context) : _showError(context),
               ),
             ),
           ],
@@ -43,6 +47,7 @@ class UnlockPattern extends StatelessWidget {
         action: SnackBarAction(
           label: 'Continue',
           onPressed: () {
+            context.read<Log>().logInfo('Valid Pattern entered');
             Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => UnlockBiometric()),
@@ -54,6 +59,7 @@ class UnlockPattern extends StatelessWidget {
   }
 
   void _showError(BuildContext context) {
+    context.read<Log>().logWarning('Invalid Pattern entered');
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Wrong pattern.\nPlease try again.'),

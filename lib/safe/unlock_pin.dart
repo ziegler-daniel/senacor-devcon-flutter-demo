@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:senacor_devcon_mysafe/safe/unlock_pattern.dart';
+
+import '../log/log.dart';
 
 class UnlockPin extends StatelessWidget {
   const UnlockPin({Key? key}) : super(key: key);
@@ -49,8 +52,7 @@ class _UnlockPinFormState extends State<UnlockPinForm> {
             obscureText: true,
             textAlign: TextAlign.center,
             onFieldSubmitted: (_) => _submit(context),
-            validator: (value) =>
-                value != '2022' ? 'PIN invalid. Please retry.' : null,
+            validator: (value) => value != '2022' ? 'PIN invalid. Please retry.' : null,
           ),
           const SizedBox(
             height: 16,
@@ -67,12 +69,14 @@ class _UnlockPinFormState extends State<UnlockPinForm> {
   void _submit(BuildContext context) {
     FocusManager.instance.primaryFocus?.unfocus();
     if (_unlockPinFormKey.currentState!.validate()) {
+      context.read<Log>().logInfo('Valid PIN entered');
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const UnlockPattern()),
       );
     } else {
       setState(() {
+        context.read<Log>().logWarning('Invalid PIN entered');
         _pinTextController.clear();
       });
     }

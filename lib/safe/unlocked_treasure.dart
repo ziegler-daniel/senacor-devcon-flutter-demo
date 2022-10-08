@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../log/log.dart';
 
 class UnlockedTreasure extends StatelessWidget {
   const UnlockedTreasure({Key? key}) : super(key: key);
@@ -16,6 +19,7 @@ class UnlockedTreasure extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
+                context.read<Log>().logSuccess('Safe locked');
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               child: const Text('Lock up'),

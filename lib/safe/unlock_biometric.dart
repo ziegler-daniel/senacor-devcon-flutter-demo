@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
 import 'package:senacor_devcon_mysafe/safe/unlocked_treasure.dart';
+
+import '../log/log.dart';
 
 class UnlockBiometric extends StatelessWidget {
   final LocalAuthentication _localAuth = LocalAuthentication();
@@ -22,7 +25,7 @@ class UnlockBiometric extends StatelessWidget {
               height: 16,
             ),
             FutureBuilder(
-                future: _canUseBiometricAuth(),
+                future: _canUseBiometricAuth(context),
                 builder: (context, snapshot) {
                   if (snapshot.data == true) {
                     return _authButton(context);
@@ -40,12 +43,12 @@ class UnlockBiometric extends StatelessWidget {
     return const Text('Our biometric systems are not working. Therefore the safe has to remain closed.');
   }
 
-  Future<bool> _canUseBiometricAuth() async {
+  Future<bool> _canUseBiometricAuth(BuildContext context) async {
     if (await _localAuth.canCheckBiometrics) {
       final List<BiometricType> availableBiometrics = await _localAuth.getAvailableBiometrics();
       return availableBiometrics.isNotEmpty;
     }
-
+    context.read<Log>().logError('Biometric Auth not available');
     return false;
   }
 
@@ -64,11 +67,21 @@ class UnlockBiometric extends StatelessWidget {
   }
 
   void showAuthError(BuildContext context) {
+    context.read<Log>().logWarning('Biometric Auth failed');
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Authentication failes.\nPlease try again.')),
+      const SnackBar(content: Text('Authentication failed.\nPlease try again.')),
     );
   }
 
-  void _openSafe(BuildContext context) =>
-      Navigator.push(context, MaterialPageRoute(builder: (_) => const UnlockedTreasure()));
+  void _openSafe(BuildContext context) {
+    context.read<Log>().logInfo('Biometric Auth successful');
+    context.read<Log>().logSuccess('Safe opened');
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const UnlockedTreasure(),
+      ),
+    );
+  }
 }

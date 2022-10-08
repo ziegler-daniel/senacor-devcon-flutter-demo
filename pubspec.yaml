@@ -15,6 +15,7 @@ dependencies:
   shared_preferences: ^2.0.15
   pattern_lock: ^2.0.0
   local_auth: ^2.1.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

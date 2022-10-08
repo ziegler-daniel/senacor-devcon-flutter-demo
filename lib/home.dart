@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:senacor_devcon_mysafe/safe/safe.dart';
 import 'package:senacor_devcon_mysafe/settings/settings.dart';
 
-import 'log/log.dart';
+import 'log/log_book.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
   Widget _page(int index) {
     switch (index) {
       case 0:
-        return const Log();
+        return const LogBook();
       case 2:
         return const Settings();
       default:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:senacor_devcon_mysafe/log/log.dart';
 import 'package:senacor_devcon_mysafe/settings/preferences/preferences.dart';
 
 import 'home.dart';
@@ -13,10 +14,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => Preferences(),
-      child: Consumer<Preferences>(
-          builder: (context, Preferences preferences, child) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Preferences()),
+        ChangeNotifierProvider(create: (_) => Log()),
+      ],
+      child: Consumer<Preferences>(builder: (context, Preferences preferences, child) {
         return _materialApp(preferences);
       }),
     );
