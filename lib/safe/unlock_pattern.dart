@@ -41,7 +41,7 @@ class UnlockPattern extends StatelessWidget {
   void _showSuccess(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Correct pattern!\nPlease move on.'),
+        content: const Text('Correct!\nPlease move on.'),
         duration: const Duration(days: 365),
         action: SnackBarAction(
           label: 'Continue',
@@ -59,7 +59,7 @@ class UnlockPattern extends StatelessWidget {
   void _showError(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Wrong pattern. Please try again.'),
+        content: Text('Wrong pattern.\nPlease try again.'),
       ),
     );
   }
