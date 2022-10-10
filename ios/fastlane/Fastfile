@@ -1,0 +1,61 @@
+default_platform(:ios)
+
+platform :ios do
+
+    before_all do |lane|
+        app_store_connect_api_key(
+            key_id: "A8STB6A2B2",
+            issuer_id: "1726db55-0a41-4e9d-9962-b077b29fb5c5",
+            key_filepath: "AuthKey_A8STB6A2B2.p8",
+            duration: 1200,
+            in_house: false
+        )
+    end
+
+    desc "Install development & distribution certificate"
+    lane :install_cert do
+        create_keychain(
+            name: "Keychain",
+            default_keychain: true,
+            unlock: true,
+            timeout: 3600,
+            lock_when_sleeps: true,
+            password: ENV["APPLE_KEYCHAIN_PASSWORD"]
+        )
+
+        import_certificate(
+            certificate_path: "development_certificate.p12",
+            certificate_password: ENV["APPLE_DEVELOPMENT_CERT_PASSWORD"],
+            keychain_name: "Keychain",
+            keychain_password: ENV["APPLE_KEYCHAIN_PASSWORD"]
+        )
+
+        import_certificate(
+            certificate_path: "distribution_certificate.p12",
+            certificate_password: ENV["APPLE_DISTRIBUTION_CERT_PASSWORD"],
+            keychain_name: "Keychain",
+            keychain_password: ENV["APPLE_KEYCHAIN_PASSWORD"]
+        )
+    end
+
+    desc "Setup provisioning profile"
+    lane :setup_profiles do
+       get_provisioning_profile(
+            app_identifier: "de.zieglr.mysafe",
+            provisioning_name: "MySafe DevCon Demo",
+            readonly: true
+       )
+    end
+
+
+    desc "Upload release to TestFlight"
+    lane :deploy_testflight do
+        upload_to_testflight(
+            app_identifier: "de.zieglr.mysafe",
+            ipa: "../build/ios/ipa/mysafe.ipa",
+            notify_external_testers: false,
+            skip_waiting_for_build_processing: true
+        )
+    end
+
+end
