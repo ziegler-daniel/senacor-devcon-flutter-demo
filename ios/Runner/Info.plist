@@ -45,5 +45,7 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Using FaceId to open the safe.</string>
 </dict>
 </plist>

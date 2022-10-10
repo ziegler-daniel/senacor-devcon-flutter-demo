@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../log/log.dart';
 
@@ -13,9 +14,13 @@ class UnlockedTreasure extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.currency_bitcoin_rounded,
-              size: 132,
+            Shimmer.fromColors(
+              baseColor: Colors.orangeAccent,
+              highlightColor: Colors.yellow,
+              child: const Icon(
+                Icons.currency_bitcoin_rounded,
+                size: 132,
+              ),
             ),
             ElevatedButton(
               onPressed: () {
