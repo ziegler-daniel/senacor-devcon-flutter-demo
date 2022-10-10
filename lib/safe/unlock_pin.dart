@@ -75,8 +75,8 @@ class _UnlockPinFormState extends State<UnlockPinForm> {
         MaterialPageRoute(builder: (_) => const UnlockPattern()),
       );
     } else {
+      context.read<Log>().logWarning('Invalid PIN entered');
       setState(() {
-        context.read<Log>().logWarning('Invalid PIN entered');
         _pinTextController.clear();
       });
     }
