@@ -50,7 +50,7 @@ class _UnlockPinFormState extends State<UnlockPinForm> {
             key: UnlockPinForm.pinFieldKey,
             keyboardType: TextInputType.number,
             obscureText: true,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             onFieldSubmitted: (_) => _submit(context),
             validator: (value) => value != '2022' ? 'PIN invalid. Please retry.' : null,
           ),
