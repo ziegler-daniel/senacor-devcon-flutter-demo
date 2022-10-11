@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:senacor_devcon_mysafe/safe/unlock_pin.dart';
 
 class Safe extends StatelessWidget {
-  const Safe({Key? key}) : super(key: key);
+  const Safe({super.key});
 
   @override
   Widget build(BuildContext context) {

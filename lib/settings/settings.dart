@@ -4,7 +4,7 @@ import 'package:senacor_devcon_mysafe/settings/notification_settings.dart';
 import 'package:senacor_devcon_mysafe/settings/security_settings.dart';
 
 class Settings extends StatelessWidget {
-  const Settings({Key? key}) : super(key: key);
+  const Settings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,7 @@ class Settings extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) => const NotificationSettings()),
+              MaterialPageRoute(builder: (context) => const NotificationSettings()),
             );
           },
         )

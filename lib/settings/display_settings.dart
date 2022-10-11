@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:senacor_devcon_mysafe/settings/preferences/preferences.dart';
 
 class DisplaySettings extends StatelessWidget {
-  const DisplaySettings({Key? key}) : super(key: key);
+  const DisplaySettings({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class DisplaySettings extends StatelessWidget {
           children: [
             const Text('Theme Preferences'),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
+              padding: const EdgeInsets.only(top: 8),
               child: Card(
                 child: ListView(
                   shrinkWrap: true,
@@ -27,8 +27,7 @@ class DisplaySettings extends StatelessWidget {
                       builder: (context, Preferences preferences, child) {
                         return SwitchListTile(
                           title: const Text('Dark Mode'),
-                          subtitle:
-                              const Text('Switch between light and dark mode'),
+                          subtitle: const Text('Switch between light and dark mode'),
                           value: preferences.isDarkMode,
                           onChanged: (value) {
                             preferences.darkMode = value;

@@ -10,7 +10,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => Preferences()),
         ChangeNotifierProvider(create: (_) => Log()),
       ],
-      child: Consumer<Preferences>(builder: (context, Preferences preferences, child) {
-        return _materialApp(preferences);
-      }),
+      child: Consumer<Preferences>(
+        builder: (context, Preferences preferences, child) {
+          return _materialApp(preferences);
+        },
+      ),
     );
   }
 
