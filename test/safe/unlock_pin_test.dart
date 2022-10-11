@@ -39,15 +39,14 @@ void main() {
     testWidgets('should display error if invalid pin is entered', (WidgetTester tester) async {
       await pumpTestApp(tester, const UnlockPin());
 
+      expect(find.text('PIN invalid. Please retry.'), findsNothing);
+
       await tester.enterText(find.byKey(UnlockPinForm.pinFieldKey), '1234');
       await tester.pumpAndSettle();
       await tester.tap(find.byType(ElevatedButton));
       await tester.pumpAndSettle();
 
       expect(find.text('PIN invalid. Please retry.'), findsOneWidget);
-
-      var pinField = tester.widget<TextFormField>(find.byKey(UnlockPinForm.pinFieldKey));
-      expect(pinField.controller?.value.text, isEmpty);
     });
 
     testWidgets('should navigate to next page if valid pin is entered', (WidgetTester tester) async {
