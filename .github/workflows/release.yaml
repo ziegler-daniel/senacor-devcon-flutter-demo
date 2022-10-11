@@ -21,7 +21,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.0.5'
+          flutter-version: '3.3.4'
 
       - name: 'Install dependencies'
         run: flutter pub get
@@ -52,12 +52,44 @@ jobs:
 
           echo "$GOOGLE_PLAY_API_KEY_BASE64" | base64 --decode > android/google-api-key.json
 
+      - name: 'Setup iOS secrets & profiles'
+        env:
+          APPLE_API_KEY_BASE64: ${{ secrets.APPLE_API_KEY_BASE64 }}
+          APPLE_DEVELOPMENT_CERT_BASE64: ${{ secrets.APPLE_DEVELOPMENT_CERT_BASE64 }}
+          APPLE_DISTRIBUTION_CERT_BASE64: ${{ secrets.APPLE_DISTRIBUTION_CERT_BASE64 }}
+          APPLE_DEVELOPMENT_CERT_PASSWORD: ${{ secrets.APPLE_DEVELOPMENT_CERT_PASSWORD }}
+          APPLE_DISTRIBUTION_CERT_PASSWORD: ${{ secrets.APPLE_DISTRIBUTION_CERT_PASSWORD }}
+          APPLE_KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+        run: |
+          echo "$APPLE_API_KEY_BASE64" | base64 --decode > ios/AuthKey_A8STB6A2B2.p8
+          echo "$APPLE_DEVELOPMENT_CERT_BASE64" | base64 --decode > ios/development_certificate.p12
+          echo "$APPLE_DISTRIBUTION_CERT_BASE64" | base64 --decode > ios/distribution_certificate.p12
+
+          echo "APPLE_DEVELOPMENT_CERT_PASSWORD=$APPLE_DEVELOPMENT_CERT_PASSWORD" > ios/fastlane/.env
+          echo "APPLE_DISTRIBUTION_CERT_PASSWORD=$APPLE_DISTRIBUTION_CERT_PASSWORD" >> ios/fastlane/.env
+          echo "APPLE_KEYCHAIN_PASSWORD=$APPLE_KEYCHAIN_PASSWORD" >> ios/fastlane/.env
+
+          cd ios
+
+          fastlane ios install_cert
+          fastlane ios setup_profiles
+
       - name: 'Build Android app'
         run: |
-          echo "Build version $APP_BUILD_NAME ($APP_BUILD_NUMBER)"
+          echo "Build Android app version $APP_BUILD_NAME ($APP_BUILD_NUMBER)"
           flutter build appbundle --build-name=$APP_BUILD_NAME --build-number=$APP_BUILD_NUMBER
 
       - name: 'Deploy Android app'
         run: |
           cd android
           fastlane android deploy_internal
+
+      - name: 'Build iOS app'
+        run: |
+          echo "Build iOS app version $APP_BUILD_NAME ($APP_BUILD_NUMBER)"
+          flutter build ipa --release --export-options-plist="ios/ExportOptions.plist" --build-name=$APP_BUILD_NAME --build-number=$APP_BUILD_NUMBER
+
+      - name: 'Deploy iOS app'
+        run: |
+          cd ios
+          fastlane ios deploy_testflight
