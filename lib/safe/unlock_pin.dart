@@ -5,7 +5,7 @@ import 'package:senacor_devcon_mysafe/safe/unlock_pattern.dart';
 import '../log/log.dart';
 
 class UnlockPin extends StatelessWidget {
-  const UnlockPin({Key? key}) : super(key: key);
+  const UnlockPin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class UnlockPin extends StatelessWidget {
 class UnlockPinForm extends StatefulWidget {
   static const Key pinFieldKey = Key('pinField');
 
-  const UnlockPinForm({Key? key}) : super(key: key);
+  const UnlockPinForm({super.key});
 
   @override
   State<UnlockPinForm> createState() => _UnlockPinFormState();

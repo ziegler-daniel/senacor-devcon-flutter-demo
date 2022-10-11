@@ -7,7 +7,7 @@ import 'package:senacor_devcon_mysafe/safe/unlock_biometric.dart';
 import '../log/log.dart';
 
 class UnlockPattern extends StatelessWidget {
-  const UnlockPattern({Key? key}) : super(key: key);
+  const UnlockPattern({super.key});
 
   @override
   Widget build(BuildContext context) {

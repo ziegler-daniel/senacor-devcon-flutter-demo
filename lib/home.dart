@@ -5,7 +5,7 @@ import 'package:senacor_devcon_mysafe/settings/settings.dart';
 import 'log/log_book.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();

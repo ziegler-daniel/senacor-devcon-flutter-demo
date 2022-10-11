@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'log.dart';
 
 class LogBook extends StatelessWidget {
-  const LogBook({Key? key}) : super(key: key);
+  const LogBook({super.key});
 
   @override
   Widget build(BuildContext context) {

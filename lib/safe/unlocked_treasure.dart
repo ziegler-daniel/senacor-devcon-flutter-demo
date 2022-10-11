@@ -5,7 +5,7 @@ import 'package:shimmer/shimmer.dart';
 import '../log/log.dart';
 
 class UnlockedTreasure extends StatelessWidget {
-  const UnlockedTreasure({Key? key}) : super(key: key);
+  const UnlockedTreasure({super.key});
 
   @override
   Widget build(BuildContext context) {

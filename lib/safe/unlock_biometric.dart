@@ -8,7 +8,7 @@ import '../log/log.dart';
 class UnlockBiometric extends StatelessWidget {
   final LocalAuthentication _localAuth = LocalAuthentication();
 
-  UnlockBiometric({Key? key}) : super(key: key);
+  UnlockBiometric({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,21 +25,22 @@ class UnlockBiometric extends StatelessWidget {
               height: 16,
             ),
             FutureBuilder(
-                future: _canUseBiometricAuth(context),
-                builder: (context, snapshot) {
-                  if (snapshot.data == true) {
-                    return _authButton(context);
-                  } else {
-                    return _authUnavailableerrorMessage();
-                  }
-                }),
+              future: _canUseBiometricAuth(context),
+              builder: (context, snapshot) {
+                if (snapshot.data == true) {
+                  return _authButton(context);
+                } else {
+                  return _authUnavailableErrorMessage();
+                }
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-  Text _authUnavailableerrorMessage() {
+  Text _authUnavailableErrorMessage() {
     return const Text('Our biometric systems are not working. Therefore the safe has to remain closed.');
   }
 
@@ -54,7 +55,7 @@ class UnlockBiometric extends StatelessWidget {
 
   ElevatedButton _authButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () async {
+      onPressed: () {
         _localAuth
             .authenticate(
               localizedReason: 'Please prove your identity. This is the last check before we open the safe.',
@@ -79,9 +80,7 @@ class UnlockBiometric extends StatelessWidget {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const UnlockedTreasure(),
-      ),
+      MaterialPageRoute(builder: (_) => const UnlockedTreasure()),
     );
   }
 }
